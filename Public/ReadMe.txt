@@ -1,0 +1,1 @@
+This folder contains publicly accessible files, such as static assets (images, stylesheets, etc.) that can be served directly by the server.

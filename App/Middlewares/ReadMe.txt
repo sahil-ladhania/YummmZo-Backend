@@ -1,0 +1,1 @@
+Contains custom middleware files that handle tasks like authentication, validation, error handling etc.

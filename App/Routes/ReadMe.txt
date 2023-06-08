@@ -1,0 +1,1 @@
+This folder contains the route files that define the API endpoints.
