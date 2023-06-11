@@ -1,61 +1,17 @@
 // Importing all the Dependencies and Modules.
 import express from 'express';
-import mongoose from 'mongoose';
+import dbConnection from '../Config/dbConnection.js'
+import User from '../App/Models/userAuth.js';
+
 
 // Creating an Express App.
 const app = express();
 
-// Using Middlewares.
-
-// Defining Database URL.
-const DB_URL = 'mongodb://localhost:27017/yummmzo_db';
-
-// Connecting to Database.
-mongoose.connect(DB_URL , {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-    .then(() => {
-        console.log("YummmZo Connected to Database...");
-    })
-    .catch((error) => {
-        console.log(`Error Connecting to Database :- ${error}`);
-    });
-
-// Defining User Schema.
-const userSchema = new mongoose.Schema({
-    firstName : {
-        type : String,
-        required : true
-    },
-    lastName : {
-        type : String,
-        required : true
-    },
-    email : {
-        type : String,
-        required :true,
-        unique : true
-    },
-    password : {
-        type : String,
-        required : true,
-        minlength : 6,
-        maxlength : 10
-    },
-    confirmPassword : {
-        type : String,
-        required : true,
-        minlength : 6,
-        maxlength : 10
-    }
-})
-
-// Defining Model.
-const User = mongoose.model('User', userSchema);
-
 // Defining Port.
 const port = 81;
+
+// Conecting to Database.
+dbConnection();
 
 // Defining Routes.
 app.get('/', (req, res) => {
@@ -75,5 +31,5 @@ app.post('/api/logout', (req, res) => {
 
 // Listening on Port.
 app.listen(port, () => {
-    console.log(`YummmZo listening on port ${port}`);
+    console.log(`YummmZo listening on port ${port}...`);
 });

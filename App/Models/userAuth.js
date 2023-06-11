@@ -1,5 +1,5 @@
 // Importing all the Dependencies and Modules.
-
+import mongoose from "mongoose";
 
 // Defining User Schema.
 const userSchema = new mongoose.Schema({
@@ -30,3 +30,8 @@ const userSchema = new mongoose.Schema({
     }
 });
 
+// Defining User Model.
+const User = mongoose.model('User', userSchema);
+
+// Exporting all the Dependencies and Modules.
+export default User;
