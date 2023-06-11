@@ -3,7 +3,6 @@ import express from 'express';
 import dbConnection from '../Config/dbConnection.js'
 import User from '../App/Models/userAuth.js';
 
-
 // Creating an Express App.
 const app = express();
 
