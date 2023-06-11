@@ -34,4 +34,4 @@ const userSchema = new mongoose.Schema({
 const User = mongoose.model('User', userSchema);
 
 // Exporting all the Dependencies and Modules.
-export default User;
+export default User
