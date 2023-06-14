@@ -17,6 +17,7 @@
     "nodemailer": "^6.9.3",
     "nodemailer-smtp-transport": "^2.7.4",
     "nodemon": "^2.0.22",
-    "stripe": "^12.8.0"
+    "stripe": "^12.8.0",
+    "validator": "^13.9.0"
   }
 }
