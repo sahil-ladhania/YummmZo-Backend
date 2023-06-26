@@ -1,20 +1,14 @@
 // Importing all the Dependencies and Modules.
+import express from 'express';
+const router = express.Router();
+import { getAllCuisines , getCuisineById , createCuisine , updateCuisine , deleteCuisine } from '../Controllers/cuisineController.js'
 
 // Defining Cuisines Routes.
-app.get('/cuisines' , (req, res) => {
-    res.send("Getting all Cuisines...");
-})
-app.get('/cuisines/:id' , (req, res) => {
-    res.send("Getting a specific Cuisine By ID...");
-})
-app.post('/cuisines' , (req, res) => {
-    res.send("Creating a New Cuisine...");
-})
-app.put('/cuisines/:id' , (req, res) => {
-    res.send("Updating an Exisiting Cuisine By ID...");
-})
-app.delete('/cuisines/:id' , (req, res) => {
-    res.send("Deleting a Cuisine By ID...");
-})
+router.get('/cuisines' , getAllCuisines);
+router.get('/cuisines/:id' , getCuisineById);
+router.post('/cuisines' , createCuisine);
+router.put('/cuisines/:id' , updateCuisine);
+router.delete('/cuisines/:id' , deleteCuisine);
 
 // Exporting all the Dependencies and Modules.
+export default router;

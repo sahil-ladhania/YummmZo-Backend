@@ -1,23 +1,15 @@
 // Importing all the Dependencies and Modules.
+import express from "express";
+const router = express.Router();
+import { getAllRestaurants , getRestaurantById , getRestaurantsByCuisine , createRestaurant , updateRestaurant , deleteRestaurant } from '../Controllers/restaurantController.js';
 
 // Defining Restaurants Routes.
-app.get('/restaurants' , (req, res) =>{
-    res.send("Getting all Restaurants...");
-})
-app.get('/restaurants/:id' , (req, res) =>{
-    res.send("Getting a specific Restaurant By ID...");
-})
-app.get('restaurants/cuisine/:cuisineId' , (req, res) => {
-    res.send("Getting Restaurants By Cuisine ID...");
-})
-app.post('/restaurants' , (req, res) => {
-    res.send("Creating a new Restaurant...");
-})
-app.put('/restaurants/:id' , (req, res) => {
-    res.send("Updating a existing Restaurant By ID...");
-})
-app.delete('/restaurants/:id' , (req, res) => {
-    res.send("Deleting a Restaurant By ID...");
-})
+router.get('/restaurants' , getAllRestaurants);
+router.get('/restaurants/:id' , getRestaurantById);
+router.get('restaurants/cuisine/:cuisineId' , getRestaurantsByCuisine);
+router.post('/restaurants' , createRestaurant);
+router.put('/restaurants/:id' , updateRestaurant);
+router.delete('/restaurants/:id' , deleteRestaurant);
 
 // Exporting all the Dependencies and Modules.
+export default router;

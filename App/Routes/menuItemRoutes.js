@@ -1,20 +1,15 @@
 // Importing all the Dependencies and Modules.
+import express from "express";
+const router = express.Router();
+import { getAllMenuItemsForRestaurant , getMenuItemByIdForRestaurant , createMenuItemForRestaurant , updateMenuItemForRestaurant , deleteMenuItemForRestaurant } from '../Controllers/menuItemController';
+
 
 // Defining Restaurants Routes.
-app.get('/restaurants/:restaurantId/menu' , (req, res) =>{
-    res.send("Getting all Menu Items for a specific Restaurant....");
-})
-app.get('/restaurants/:restaurantId/menu/:id' , (req, res) =>{
-    res.send("Getting a specific Menu Item by ID for a Restaurant....");
-})
-app.post('/restaurants/:restaurantId/menu' , (req, res) => {
-    res.send("Creating a new Menu Item for a Restaurant....");
-})
-app.put('/restaurants/:restaurantId/menu/:id' , (req, res) => {
-    res.send("Updating an existing Menu Item for a Restaurant....");
-})
-app.delete('/restaurants/:restaurantId/menu/:id' , (req, res) => {
-    res.send("Deleting a Menu Item by ID for a Restaurant....");
-})
+router.get('/restaurants/:restaurantId/menu' , getAllMenuItemsForRestaurant);
+router.get('/restaurants/:restaurantId/menu/:id' , getMenuItemByIdForRestaurant);
+router.post('/restaurants/:restaurantId/menu' , createMenuItemForRestaurant);
+router.put('/restaurants/:restaurantId/menu/:id' , updateMenuItemForRestaurant);
+router.delete('/restaurants/:restaurantId/menu/:id' , deleteMenuItemForRestaurant);
 
 // Exporting all the Dependencies and Modules.
+export default router;
