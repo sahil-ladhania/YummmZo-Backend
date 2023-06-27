@@ -26,6 +26,10 @@ const restaurantSchema = new mongoose.Schema({
     priceForTwo : {
         type:Number,
         required : true
+    },
+    isFavourite : {
+        type:Boolean,
+        required : false
     }
 })
 
