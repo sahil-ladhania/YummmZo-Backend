@@ -1,8 +1,7 @@
 // Importing all the Dependencies and Modules.
+import { getAllMenuItemsForRestaurant , getMenuItemByIdForRestaurant , createMenuItemForRestaurant , updateMenuItemForRestaurant , deleteMenuItemForRestaurant } from '../Controllers/menuItemController';
 import express from "express";
 const router = express.Router();
-import { getAllMenuItemsForRestaurant , getMenuItemByIdForRestaurant , createMenuItemForRestaurant , updateMenuItemForRestaurant , deleteMenuItemForRestaurant } from '../Controllers/menuItemController';
-
 
 // Defining Restaurants Routes.
 router.get('/restaurants/:restaurantId/menu' , getAllMenuItemsForRestaurant);

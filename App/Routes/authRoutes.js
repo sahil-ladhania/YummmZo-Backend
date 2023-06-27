@@ -1,15 +1,11 @@
 // Importing all the Dependencies and Modules.
-
+import express from 'express';
+const router = express.Router();
 
 // Defining Authentication Routes.
-app.post('/api/register', (req, res) => {
-    res.send('User Registration');
-});
-app.post('/api/login', (req, res) => {
-    res.send('User Login');
-});
-app.post('/api/logout', (req, res) => {
-    res.send('User Logout');
-});
+router.post('/api/register' , );
+router.post('/api/login' , );
+router.post('/api/logout' , );
 
 // Exporting all the Dependencies and Modules.
+export default router;

@@ -1,7 +1,7 @@
 // Importing all the Dependencies and Modules.
+import { getAllCuisines , getCuisineById , createCuisine , updateCuisine , deleteCuisine } from '../Controllers/cuisineController.js'
 import express from 'express';
 const router = express.Router();
-import { getAllCuisines , getCuisineById , createCuisine , updateCuisine , deleteCuisine } from '../Controllers/cuisineController.js'
 
 // Defining Cuisines Routes.
 router.get('/cuisines' , getAllCuisines);
