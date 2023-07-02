@@ -62,8 +62,34 @@ app.post('/api/users/register', (req, res) => {
 });
 
 // API for User Login.
-app.post('/api/login', (req, res) => {
-    res.send('User Login');
+app.post('/api/users/login', (req, res) => {
+    // Checking For Required Feilds.
+    const { email , password } = req.body;
+    // Validating Input Feilds.
+    if ( !email || !password ){
+        return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
+    }
+    else{
+        User.findOne({ email : email })
+        .then((user) => {
+            // If User Not Found.
+            if(!user){
+                return res.status(401).send({ Error: "Invalid Login Credentials!" });
+            }
+            else{
+                if(user.password === password){
+                    return res.status(200).send({ Message: "User Logged In Successfully!" });
+                }
+                // If Passwords Didnt Match.
+                else{
+                    return res.status(401).send({ Error: "Invalid Login Credentials!" });
+                }
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Fetching The User Data. ${error}`});
+        })
+    }
 });
 
 // API for User Logout.
