@@ -12,7 +12,7 @@ import bcrypt from 'bcrypt';
 const app = express();
 
 // Defining Port.
-const port = 81;
+const port = 3000;
 
 // Adding Middlewares.
 app.use(express.json());
