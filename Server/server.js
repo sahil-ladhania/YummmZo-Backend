@@ -1,21 +1,22 @@
 // Importing all the Dependencies and Modules.
 import express from 'express';
+import cors from 'cors';
 import dbConnection from '../Config/dbConnection.js'
 import User from '../App/Models/userAuth.js';
 import Cuisine from '../App/Models/cuisineSchema.js';
 import Restaurant from '../App/Models/restaurantSchema.js';
 import MenuItem from '../App/Models/menuItemSchema.js';
-import bcrypt from 'bcrypt';
 
 
 // Creating an Express App.
 const app = express();
 
 // Defining Port.
-const port = 3000;
+const port = 81;
 
 // Adding Middlewares.
 app.use(express.json());
+app.use(cors());
 
 // Conecting to Database.
 dbConnection();
