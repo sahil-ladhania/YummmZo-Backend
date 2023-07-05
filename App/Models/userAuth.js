@@ -20,13 +20,11 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true,
         minlength : 6,
-        maxlength : 10
+        maxlength : 200
     },
-    confirmPassword : {
-        type : String,
-        required : true,
-        minlength : 6,
-        maxlength : 10
+    tokens : {
+        type : [String],
+        maxlength : 500
     }
 });
 
