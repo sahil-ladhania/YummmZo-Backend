@@ -4,6 +4,7 @@ import cors from 'cors';
 import dbConnection from '../Config/dbConnection.js'
 import dotenv from 'dotenv';
 import authRoutes from '../App/Routes/authRoutes.js';
+import restaurantRoutes from '../App/Routes/restaurantRoutes.js';
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 
 // Environment Variables.
@@ -29,6 +30,8 @@ app.get('/', (req, res) => {
 
 // Authentication Routes.
 app.use(authRoutes);
+// Restaurant Routes.
+app.use(restaurantRoutes);
 
 // API for Test Route.
 app.get('/test' , requireLogin , (req,res) => {

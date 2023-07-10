@@ -6,9 +6,10 @@ import jwt from 'jsonwebtoken';
 // Controller Functions to handle a specific API Endpoint.
 // -----For User Registration.-----
 export const userRegister = (req,res) => {
-    // Checking For Required Feilds.
+    // Extracting the Form Data from The Request.
     const { firstName , lastName , email , password } = req.body;
     // Validating Input Feilds.
+    // Checking For Required Feilds.
     if ( !firstName || !lastName || !email || !password ){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
