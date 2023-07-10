@@ -84,26 +84,26 @@ export const deleteRestaurant = (req, res) => {
 };
 // -----For Making a Restaurant as Favourite.-----
 export const markRestaurantAsFavorite = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    const restaurantId = req.params.id;
+    Restaurant.findById(restaurantId)
+        .then((restaurant) => {
+            if(!restaurant){
+                return res.status(404).send({ Error : "Restaurant Not Found !!!"});
+            }
+            else{
+                restaurant.isFavourite = true;
+                return restaurant.save()
+                    .then(() => {
+                        return res.status(200).send({ Message : "Restaurant Marked As Favourite ..."});
+                    })
+                    .catch((error) => {
+                        return res.status(500).send({ Error : `Error Occured While Marking Restaurant As Favourite : ${error}`});
+                    })
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Marking Restaurant As Favourite : ${error}`});
+        })
 };
 // -----For Fetching all Restaurants from the Database.-----
 export const getAllRestaurants = (req, res) => {

@@ -28,8 +28,8 @@ const restaurantSchema = new mongoose.Schema({
         required : true
     },
     isFavourite : {
-        type:Boolean,
-        required : false
+        type : Boolean,
+        required : true
     }
 })
 
