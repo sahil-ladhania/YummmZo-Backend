@@ -58,36 +58,29 @@ export const updateRestaurant = (req, res) => {
                         return res.status(200).send({ Message : "Restaurant Successfully Updated ..."});
                     })
                     .catch((error) => {
-                        return res.status(500).send({ Error : `An Error Occurred While Updating The Restaurant : ${error}`});
+                        return res.status(500).send({ Error : `Error Occurred While Updating The Restaurant : ${error}`});
                     })
             }
         })
         .catch((error) => {
-            return res.status().send({ Error : `Error Occured While Finding The Restaurant : ${error}`})
+            return res.status().send({ Error : `Error Occured While Finding The Restaurant : ${error}`});
         })
 };
 // -----For Deleting a Restaurant by ID.-----
 export const deleteRestaurant = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    const restaurantId = req.params.id;
+    Restaurant.findByIdAndDelete(restaurantId)
+        .then((deletedRestaurant) => {
+            if (!deletedRestaurant){
+                return res.status(404).send({ Error : "Restaurant Not Found !!!"});
+            }
+            else{
+                return res.status(200).send({ Message : "Restaurant Successfully Deleted ..."});
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Deleting The Restaurant : ${error}`});
+        })
 };
 // -----For Making a Restaurant as Favourite.-----
 export const markRestaurantAsFavorite = (req, res) => {
