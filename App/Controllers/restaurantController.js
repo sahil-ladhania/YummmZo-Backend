@@ -106,70 +106,31 @@ export const markRestaurantAsFavorite = (req, res) => {
 };
 // -----For Fetching all Restaurants from the Database.-----
 export const getAllRestaurants = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    Restaurant.find()
+        .then((restaurants) => {
+            return res.status(200).send(restaurants);
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Fetching The List of Restaurants : ${error}`});
+        })
 };
 // -----For Getting a Specific Restaurant by ID.-----
 export const getRestaurantById = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    const restaurantId = req.params.id;
+    Restaurant.findById(restaurantId)
+        .then((restaurantById) => {
+            if (!restaurantById){
+                return res.status(404).send({ Error: 'Restaurant Not Found !!!' });
+            }
+            else{
+                return res.status(200).send(restaurantById);
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Fetching Restaurant By ID : ${error}`});
+        })
 };
 // -----For Getting Restaurants by Cuisine ID.-----
 export const getRestaurantsByCuisine = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    
 };
