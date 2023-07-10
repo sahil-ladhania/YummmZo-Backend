@@ -31,32 +31,40 @@ export const createRestaurant = (req, res) => {
                 }
             })
             .catch((error) => {
-                return res.status(500).send({ Error : `Error Occured While Saving The User Data. ${error}`});
+                return res.status(500).send({ Error : `Error Occured While Saving The User Data : ${error}`});
             })
     }
 };
 // -----For Updating an Existing Restaurant by ID.-----
 export const updateRestaurant = (req, res) => {
-    // Extract data from request, if needed
-    // ...
-    // Perform necessary operations (e.g., fetch data, update database, etc.)
-    // ...
-    return new Promise((resolve, reject) => {
-        // Perform the necessary operations inside the Promise
-        // ...
-        // If the operations are successful, resolve with the result
-        // ...
-        // If there is an error, reject with the error
-        // ...
-    })
-    .then((result) => {
-        // Send the response back to the client with the result
-        // ...
-    })
-    .catch((error) => {
-        // Handle any errors that occur during processing
-        // ...
-    });
+    const restaurantId = req.params.id;
+    const { imageURL , restaurantName , cuisine , rating , deliveryTime , priceForTwo , isFavourite } = req.body;
+    const updatedData = req.body;
+    Restaurant.findById(restaurantId)
+        .then((restaurant) => {
+            if(!restaurant){
+                return res.status(404).send({ Error : "Restaurant Not Found !!!"});
+            }
+            else{
+                restaurant.imageURL = updatedData.imageURL;
+                restaurant.restaurantName = updatedData.restaurantName;
+                restaurant.cuisine = updatedData.cuisine;
+                restaurant.rating = updatedData.rating;
+                restaurant.deliveryTime = updatedData.deliveryTime;
+                restaurant.priceForTwo = updatedData.priceForTwo;
+                restaurant.isFavourite = updatedData.isFavourite;
+                restaurant.save()
+                    .then(() => {
+                        return res.status(200).send({ Message : "Restaurant Successfully Updated ..."});
+                    })
+                    .catch((error) => {
+                        return res.status(500).send({ Error : `An Error Occurred While Updating The Restaurant : ${error}`});
+                    })
+            }
+        })
+        .catch((error) => {
+            return res.status().send({ Error : `Error Occured While Finding The Restaurant : ${error}`})
+        })
 };
 // -----For Deleting a Restaurant by ID.-----
 export const deleteRestaurant = (req, res) => {
