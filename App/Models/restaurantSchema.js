@@ -46,10 +46,6 @@ const restaurantSchema = new mongoose.Schema({
     rating : {
         type: Number,
         required : true
-    },
-    isFavourite : {
-        type : Boolean,
-        required : true
     }
 })
 
