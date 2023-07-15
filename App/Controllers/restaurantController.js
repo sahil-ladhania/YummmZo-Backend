@@ -5,10 +5,10 @@ import Restaurant from '../Models/restaurantSchema.js';
 // -----For Creating a new Restaurant.-----
 export const createRestaurant = (req, res) => {
     // Extracting the Form Data from The Request.
-    const { imageURL , restaurantName , cuisine , rating , deliveryTime , priceForTwo , isFavourite } = req.body;
+    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , isFavourite } = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if ( !imageURL || !restaurantName || !cuisine || !rating || !deliveryTime || !priceForTwo || !isFavourite ){
+    if ( !restaurantName || !cuisine || !deliveryTime || !priceForTwo || !imageURL || !restaurantCompleteAddress || !mobileNumberAtRestaurant || !mobileNumberOfOwner || !restaurantOwnerName || !restaurantOwnerEmailAddress || !rating || !isFavourite ){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
     else{
@@ -20,7 +20,7 @@ export const createRestaurant = (req, res) => {
                 }
                 else{
                     // Creating New Instance To The Database.
-                    const newRestaurant = new Restaurant({ imageURL , restaurantName , cuisine , rating , deliveryTime , priceForTwo , isFavourite });
+                    const newRestaurant = new Restaurant({ restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , isFavourite });
                     newRestaurant.save()
                         .then(() => {
                             return res.status(200).send({ Message : "Restaurant Successfully Registered ..."});
@@ -38,7 +38,7 @@ export const createRestaurant = (req, res) => {
 // -----For Updating an Existing Restaurant by ID.-----
 export const updateRestaurant = (req, res) => {
     const restaurantId = req.params.id;
-    const { imageURL , restaurantName , cuisine , rating , deliveryTime , priceForTwo , isFavourite } = req.body;
+    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , isFavourite } = req.body;
     const updatedData = req.body;
     Restaurant.findById(restaurantId)
         .then((restaurant) => {
@@ -46,12 +46,17 @@ export const updateRestaurant = (req, res) => {
                 return res.status(404).send({ Error : "Restaurant Not Found !!!"});
             }
             else{
-                restaurant.imageURL = updatedData.imageURL;
                 restaurant.restaurantName = updatedData.restaurantName;
                 restaurant.cuisine = updatedData.cuisine;
-                restaurant.rating = updatedData.rating;
                 restaurant.deliveryTime = updatedData.deliveryTime;
                 restaurant.priceForTwo = updatedData.priceForTwo;
+                restaurant.imageURL = updatedData.imageURL;
+                restaurant.restaurantCompleteAddress = updatedData.restaurantCompleteAddress;
+                restaurant.mobileNumberAtRestaurant = updatedData.mobileNumberAtRestaurant;
+                restaurant.mobileNumberOfOwner = updatedData.mobileNumberOfOwner;
+                restaurant.restaurantOwnerName = updatedData.restaurantOwnerName;
+                restaurant.restaurantOwnerEmailAddress = updatedData.restaurantOwnerEmailAddress;
+                restaurant.rating = updatedData.rating;
                 restaurant.isFavourite = updatedData.isFavourite;
                 restaurant.save()
                     .then(() => {
