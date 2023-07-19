@@ -1,5 +1,6 @@
 // Importing all the Dependencies and Modules.
 import mongoose from "mongoose";
+import menuItemSchema from '../Models/menuItemSchema.js';
 
 // Defining User Schema.
 const restaurantSchema = new mongoose.Schema({
@@ -46,7 +47,14 @@ const restaurantSchema = new mongoose.Schema({
     rating : {
         type: Number,
         required : true
-    }
+    },
+    // Array Of Menu Items
+    menuItems : [ 
+        {
+            type : mongoose.Schema.Types.ObjectId,
+            ref: "MenuItem",
+        }
+    ]
 })
 
 // Defining User Model.

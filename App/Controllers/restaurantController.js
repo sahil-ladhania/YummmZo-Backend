@@ -5,10 +5,10 @@ import Restaurant from '../Models/restaurantSchema.js';
 // -----For Creating a new Restaurant.-----
 export const createRestaurant = (req, res) => {
     // Extracting the Form Data from The Request.
-    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating } = req.body;
+    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , menuItems } = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if ( !restaurantName || !cuisine || !deliveryTime || !priceForTwo || !imageURL || !restaurantCompleteAddress || !mobileNumberAtRestaurant || !restaurantOwnerName || !restaurantOwnerEmailAddress || !rating ){
+    if ( !restaurantName || !cuisine || !deliveryTime || !priceForTwo || !imageURL || !restaurantCompleteAddress || !mobileNumberAtRestaurant || !restaurantOwnerName || !restaurantOwnerEmailAddress || !rating || !menuItems ){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
     else{
@@ -20,7 +20,7 @@ export const createRestaurant = (req, res) => {
                 }
                 else{
                     // Creating New Instance To The Database.
-                    const newRestaurant = new Restaurant({ restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating });
+                    const newRestaurant = new Restaurant({ restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , menuItems });
                     newRestaurant.save()
                         .then(() => {
                             return res.status(200).send({ Message : "Restaurant Successfully Registered ..."});
@@ -38,7 +38,7 @@ export const createRestaurant = (req, res) => {
 // -----For Updating an Existing Restaurant by ID.-----
 export const updateRestaurant = (req, res) => {
     const restaurantId = req.params.id;
-    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating } = req.body;
+    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , menuItems } = req.body;
     const updatedData = req.body;
     Restaurant.findById(restaurantId)
         .then((restaurant) => {
@@ -57,6 +57,7 @@ export const updateRestaurant = (req, res) => {
                 restaurant.restaurantOwnerName = updatedData.restaurantOwnerName;
                 restaurant.restaurantOwnerEmailAddress = updatedData.restaurantOwnerEmailAddress;
                 restaurant.rating = updatedData.rating;
+                restaurant.menuItems = updatedData.menuItems;
                 restaurant.save()
                     .then(() => {
                         return res.status(200).send({ Message : "Restaurant Successfully Updated ..."});
