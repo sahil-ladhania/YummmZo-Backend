@@ -1,4 +1,5 @@
 // Importing Necessary Dependencies and Files.
+import mongoose from 'mongoose';
 import MenuItem from '../Models/menuItemSchema.js';
 import Restaurant from '../Models/restaurantSchema.js';
 
@@ -8,10 +9,10 @@ export const createMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
     const {restaurantId} = req.params;
     // Extracting the Form Data From The Request.
-    const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription} = req.body;
+    const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription , restaurant} = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if (!imageURL || !vegOrNonveg || !itemName || !itemPrice || !itemDescription){
+    if (!imageURL || !vegOrNonveg || !itemName || !itemPrice || !itemDescription || !restaurant){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
     else{
@@ -28,7 +29,7 @@ export const createMenuItemForRestaurant = (req, res) => {
                     itemName,
                     itemPrice,
                     itemDescription,
-                    restaurant: restaurant._id, // Link The Menu Item To The Restaurant.
+                    restaurant: restaurant._id // Link The Menu Item To The Restaurant.
                 })
                 // Saving The Menu Item In The Database.
                 newMenuItem.save()
@@ -55,8 +56,7 @@ export const createMenuItemForRestaurant = (req, res) => {
 // -----For Updating an Existing Menu Item for a Restaurant-----
 export const updateMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
-    const {restaurantId} = req.params;
-    const ItemId = req.params.id;
+    const {restaurantId , ItemId} = req.params;
     // Extracting the Form Data From The Request.
     const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription} = req.body;
     const updatedItem = req.body;
@@ -87,15 +87,21 @@ export const updateMenuItemForRestaurant = (req, res) => {
 // -----For Deleting a Menu Item by ID for a Restaurant-----
 export const deleteMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
-    const {restaurantId} = req.params;
-    const ItemId = req.params.id;
+    const {restaurantId , ItemId} = req.params;
     MenuItem.findByIdAndDelete(ItemId)
         .then((deletedItem) => {
             if (!deletedItem){
                 return res.status(404).send({ Error : "Item Not Found !!!"});
             }
             else{
-                return res.status(200).send({ Message : "Item Successfully Deleted ..."});
+                // Remove The Deleted MenuItem's _id From The menuItems Array Of The Associated Restaurant.
+                Restaurant.findByIdAndUpdate(restaurantId, { $pull: { menuItems: deletedItem._id } })
+                    .then(() => {
+                        return res.status(200).send({ Message: "Item Successfully Deleted ..." });
+                    })
+                    .catch((error) => {
+                        return res.status(500).send({ Error: `Error Occurred While Updating the Restaurant: ${error}` });
+                    });
             }
         })
         .catch((error) => {
@@ -107,9 +113,17 @@ export const getAllMenuItemsForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
     const {restaurantId} = req.params;
     // For Getting All The MenuItems For The Restaurant.
-    MenuItem.find({restaurant : restaurantId})
-        .then((menuItems) => {
-            return res.status(200).send(menuItems);
+    Restaurant.findById(restaurantId)
+        .populate('menuItems') // Populate The menuItems Array With The Referenced Documents.
+        .then((restaurant) => {
+            if(!restaurant){
+                return res.status(404).send({ Error: 'Restaurant Not Found !!!' });
+            }
+            else{
+                // Now The menuItems Array Will Contain The Actual Menu Item Documents.
+                const menuItems = restaurant.menuItems;
+                return res.status(200).send(menuItems);
+            }
         })
         .catch((error) => {
             return res.status(500).json({ Error: `Error Occurred While Retrieving Menu Items. ${error}` });
@@ -117,14 +131,30 @@ export const getAllMenuItemsForRestaurant = (req, res) => {
 };
 // -----For Fetching a Specific Menu Item by ID for a Restaurant-----
 export const getMenuItemByIdForRestaurant = (req, res) => {
-    const {ItemId} = req.params;
-    MenuItem.findById(ItemId)
-        .then((menuById) => {
-            if (!menuById){
+    const {restaurantId , ItemId} = req.params;
+    console.log('restaurantId:', restaurantId);
+    console.log('ItemId:', ItemId);
+    // Use mongoose.Types.ObjectId instead of ObjectId constructor
+    const objectIdMenuItemId = mongoose.Types.ObjectId.createFromHexString(ItemId);
+    MenuItem.findById(objectIdMenuItemId)
+        .then((itemById) => {
+            console.log('menuById:', itemById);
+            if (!itemById){
                 return res.status(404).send({ Error: 'Item Not Found !!!' });
+            }
+            else{
+                // Check If The Retrieved Menu Item Belongs To The Specified Restaurant.
+                if (!itemById.restaurant || !itemById.restaurant.equals(restaurantId)) {
+                    return res.status(400).send({ Error: 'Menu Item Does Not Belong To This Restaurant !!!' });
+                }
+                // If The Menu Item Belongs To The Restaurant, Send It As a Response.
+                else{
+                    return res.status(200).send(itemById);
+                }
             }
         })
         .catch((error) => {
+            console.log('Error:', error);
             return res.status(500).send({ Error : `Error Occured While Fetching Menu By ID : ${error}`});
         })
 };

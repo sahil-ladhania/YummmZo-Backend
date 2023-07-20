@@ -52,7 +52,7 @@ const restaurantSchema = new mongoose.Schema({
     menuItems : [ 
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref: "MenuItem",
+            ref: "MenuItem"
         }
     ]
 })
