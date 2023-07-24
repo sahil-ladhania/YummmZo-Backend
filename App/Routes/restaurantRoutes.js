@@ -1,5 +1,6 @@
 // Importing all the Dependencies and Modules.
 import { getAllRestaurants , getRestaurantById , getRestaurantsByCuisine , createRestaurant , updateRestaurant , deleteRestaurant , markRestaurantAsFavorite } from '../Controllers/restaurantController.js';
+import Restaurant from '../Models/restaurantSchema.js';
 import express from "express";
 const router = express.Router();
 
