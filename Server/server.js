@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import authRoutes from '../App/Routes/authRoutes.js';
 import restaurantRoutes from '../App/Routes/restaurantRoutes.js';
 import menuItemRoutes from '../App/Routes/menuItemRoutes.js';
+import cuisineRoutes from '../App/Routes/cuisineRoutes.js';
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 
 // Environment Variables.
@@ -35,6 +36,8 @@ app.use(authRoutes);
 app.use(restaurantRoutes);
 // MenuItem Routes.
 app.use(menuItemRoutes);
+// Cuisine Routes.
+app.use(cuisineRoutes);
 
 // API for Test Route.
 app.get('/test' , requireLogin , (req,res) => {

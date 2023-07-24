@@ -68,7 +68,7 @@ export const updateRestaurant = (req, res) => {
             }
         })
         .catch((error) => {
-            return res.status().send({ Error : `Error Occured While Finding The Restaurant : ${error}`});
+            return res.status(404).send({ Error : `Error Occured While Finding The Restaurant : ${error}`});
         })
 };
 // -----For Deleting a Restaurant by ID.-----
