@@ -4,14 +4,14 @@ import User from "../Models/userAuth.js";
 
 // Controller Functions to handle a specific API Endpoint.
 // -----To Add An Item To The Cart.-----
-export const addItem = () => {
+export const addItem = (req , res) => {
     // Extracting User ID From Request Parameters.
-    const { userId } = req.params;
+    const { userId , restaurantId , ItemId } = req.params;
     // Extracting the Form Data From The Request.
-    const {restaurantId , itemId , itemName , itemQuantity , itemPrice} = req.body;
+    const { itemName , itemQuantity , itemPrice } = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if(!restaurantId || !itemId || !itemName || !itemQuantity || !itemPrice){
+    if(!itemName || !itemQuantity || !itemPrice){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
     else{
@@ -22,13 +22,20 @@ export const addItem = () => {
                     return res.status(404).send({ Error: "User Not Found!!!" });
                 }
                 else{
-                    // Creating Cart Item Object.
+                    // Calculating Total Price.
+                    const totalPrice = (itemQuantity * itemPrice);
+                    console.log(totalPrice);
+                    // Create a New Instance Of Cart.
                     const cartItems = new Cart({
+                        userId,
                         restaurantId,
-                        itemId,
+                        ItemId,
                         itemName,
                         itemQuantity,
-                        itemPrice
+                        itemPrice,
+                        totalPrice,
+                        createdAt: new Date(),
+                        updatedAt: new Date()
                     });
                     // Saving The Cart Items In The Database.
                     cartItems.save()
@@ -36,18 +43,14 @@ export const addItem = () => {
                             return res.status(200).send({ Message: "Item's Successfully Added To Cart..." });
                         })
                         .catch((error) => {
-
+                            return res.status(500).send({ Error: `Error Occurred While Saving The Cart Item: ${error}` });
                         })
                 }
             })
             .catch((error) => {
-
+                return res.status(500).send({ Error: `Error Occurred While Finding The User: ${error}` });
             })
     }
-    // Calculating Total Price.
-    // Saving to Database.
-    // Handle Errors.
-    // Return Response.
 }
 // -----To Increment Item In The Cart.-----
 export const incrementQuantity = () => {

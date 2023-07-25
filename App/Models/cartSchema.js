@@ -4,15 +4,15 @@ import mongoose from "mongoose";
 // Defining User Schema.
 const cartSchema = new mongoose.Schema({
     userId : {
-        type : Number,
+        type : String,
         required : true
     },
     restaurantId : {
-        type : Number,
+        type : String,
         required : true
     },
-    itemId : {
-        type : Number,
+    ItemId : {
+        type : String,
         required : true
     },
     itemName : {
