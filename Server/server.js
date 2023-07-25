@@ -7,6 +7,7 @@ import authRoutes from '../App/Routes/authRoutes.js';
 import restaurantRoutes from '../App/Routes/restaurantRoutes.js';
 import menuItemRoutes from '../App/Routes/menuItemRoutes.js';
 import cuisineRoutes from '../App/Routes/cuisineRoutes.js';
+import cartRoutes from '../App/Routes/cartRoutes.js';
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 
 // Environment Variables.
@@ -38,6 +39,8 @@ app.use(restaurantRoutes);
 app.use(menuItemRoutes);
 // Cuisine Routes.
 app.use(cuisineRoutes);
+// Cart Routes.
+app.use(cartRoutes);
 
 // API for Test Route.
 app.get('/test' , requireLogin , (req,res) => {
