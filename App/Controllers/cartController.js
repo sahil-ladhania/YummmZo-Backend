@@ -5,61 +5,22 @@ import User from "../Models/userAuth.js";
 // Controller Functions to handle a specific API Endpoint.
 // -----To Add An Item To The Cart.-----
 export const addItem = (req , res) => {
-    // Extracting User ID From Request Parameters.
-    const { userId , restaurantId , ItemId } = req.params;
+    // Extracting User ID , Restaurant ID And Item ID From Request Parameters.
     // Extracting the Form Data From The Request.
-    const { itemName , itemQuantity , itemPrice } = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if(!itemName || !itemQuantity || !itemPrice){
-        return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
-    }
-    else{
-        // Find The Specific User By Its ID.
-        User.findById(userId)
-            .then((user) => {
-                if(!user){
-                    return res.status(404).send({ Error: "User Not Found!!!" });
-                }
-                else{
-                    // Calculating Total Price.
-                    const totalPrice = (itemQuantity * itemPrice);
-                    console.log(totalPrice);
-                    // Create a New Instance Of Cart.
-                    const cartItems = new Cart({
-                        userId,
-                        restaurantId,
-                        ItemId,
-                        itemName,
-                        itemQuantity,
-                        itemPrice,
-                        totalPrice,
-                        createdAt: new Date(),
-                        updatedAt: new Date()
-                    });
-                    // Saving The Cart Items In The Database.
-                    cartItems.save()
-                        .then(() => {
-                            return res.status(200).send({ Message: "Item's Successfully Added To Cart..." });
-                        })
-                        .catch((error) => {
-                            return res.status(500).send({ Error: `Error Occurred While Saving The Cart Item: ${error}` });
-                        })
-                }
-            })
-            .catch((error) => {
-                return res.status(500).send({ Error: `Error Occurred While Finding The User: ${error}` });
-            })
-    }
+    // Find The Specific User By Its ID.
+    // Calculating Total Price.
+    // Saving The Cart Items In The Database.
 }
 // -----To Increment Item In The Cart.-----
-export const incrementQuantity = () => {
-    // Receive Parameters.
-    // Use the Cart Model To Find Cart Items With Given User And Item ID's.
-    // Retrieve Cart Item.
-    // Update Quantity.
-    // Handle Errors.
-    // Return Response.
+export const incrementQuantity = (req , res) => {
+    // Extracting User ID , Restaurant ID And Item ID From Request Parameters.
+    // Use The Cart Model To Find Cart Items With Given User And Item ID's.
+    // Find The Specific Cart Item In The User's Cart By Item ID And Restaurant ID.
+    // Increment The Quantity Of The Item In The Cart.
+    // Recalculate The Total Price.
+    // Save The Updated Cart To The Database.
 }
 // -----To Decrement Item In The Cart.-----
 export const decrementQuantity = () => {
