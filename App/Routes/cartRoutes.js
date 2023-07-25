@@ -4,10 +4,10 @@ import {addItem , removeAllItem , incrementQuantity , decrementQuantity , fetchC
 const router = express.Router();
 
 // Defining Authentication Routes.
-router.post('/api/cart/addItem' , addItem);
-router.post('/api/cart/removeItem' , removeAllItem);
-router.post('/api/cart/incrementItem' , incrementQuantity);
-router.post('/api/cart/deccrementItem' , decrementQuantity);
+router.post('/api/cart/addItem/:userId' , addItem);
+router.post('/api/cart/removeAllItem' , removeAllItem);
+router.post('/api/cart/incrementQuantity/:userId/:itemId' , incrementQuantity);
+router.post('/api/cart/decrementQuantity/:userId/:itemId' , decrementQuantity);
 router.get('/api/cart/:userId' , fetchCartItems);
 
 // Exporting all the Dependencies and Modules.
