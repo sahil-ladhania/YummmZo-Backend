@@ -9,10 +9,10 @@ export const createMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
     const {restaurantId} = req.params;
     // Extracting the Form Data From The Request.
-    const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription , restaurant} = req.body;
+    const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription} = req.body;
     // Validating Input Feilds.
     // Checking If User Has Filled The Required Details.
-    if (!imageURL || !vegOrNonveg || !itemName || !itemPrice || !itemDescription || !restaurant){
+    if (!imageURL || !vegOrNonveg || !itemName || !itemPrice || !itemDescription){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
     else{
@@ -56,11 +56,11 @@ export const createMenuItemForRestaurant = (req, res) => {
 // -----For Updating an Existing Menu Item for a Restaurant-----
 export const updateMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
-    const {restaurantId , ItemId} = req.params;
+    const {restaurantId , menuItemId} = req.params;
     // Extracting the Form Data From The Request.
     const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription} = req.body;
     const updatedItem = req.body;
-    MenuItem.findById(ItemId)
+    MenuItem.findById(menuItemId)
         .then((item) => {
             if(!item){
                 return res.status(404).send({ Error : "Item Not Found !!!"});
@@ -87,8 +87,8 @@ export const updateMenuItemForRestaurant = (req, res) => {
 // -----For Deleting a Menu Item by ID for a Restaurant-----
 export const deleteMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
-    const {restaurantId , ItemId} = req.params;
-    MenuItem.findByIdAndDelete(ItemId)
+    const {restaurantId , menuItemId} = req.params;
+    MenuItem.findByIdAndDelete(menuItemId)
         .then((deletedItem) => {
             if (!deletedItem){
                 return res.status(404).send({ Error : "Item Not Found !!!"});
@@ -131,11 +131,11 @@ export const getAllMenuItemsForRestaurant = (req, res) => {
 };
 // -----For Fetching a Specific Menu Item by ID for a Restaurant-----
 export const getMenuItemByIdForRestaurant = (req, res) => {
-    const {restaurantId , ItemId} = req.params;
+    const {restaurantId , menuItemId} = req.params;
     console.log('restaurantId:', restaurantId);
-    console.log('ItemId:', ItemId);
+    console.log('menuItemId:', menuItemId);
     // Use mongoose.Types.ObjectId instead of ObjectId constructor
-    const objectIdMenuItemId = mongoose.Types.ObjectId.createFromHexString(ItemId);
+    const objectIdMenuItemId = mongoose.Types.ObjectId.createFromHexString(menuItemId);
     MenuItem.findById(objectIdMenuItemId)
         .then((itemById) => {
             console.log('menuById:', itemById);
