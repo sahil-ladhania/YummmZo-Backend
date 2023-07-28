@@ -6,14 +6,13 @@ import User from "./userAuth.js";
 
 // Defining Cart Item Schema.
 const cartItemSchema = new mongoose.Schema({
-    ItemId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref : MenuItem,
+    menuItemId: {
+        type: mongoose.Schema.Types.ObjectId,        
         required: true
     },
     restaurantId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref : Restaurant,
+        ref : "Restaurant",
         required: true
     },
     itemName: {
@@ -41,8 +40,36 @@ const cartSchema = new mongoose.Schema({
         ref : User,
         required: true
     },
-    // Array Of Cart Item Schema Objects.
-    cartItems: [cartItemSchema], 
+    cartItems : [
+        {
+        menuItemId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: MenuItem,
+            required: true,
+        },
+        restaurantId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: Restaurant,
+            required: true,
+        },
+        itemName: {
+            type: String,
+            required: true,
+        },
+        itemQuantity: {
+            type: Number,
+            required: true,
+        },
+        itemPrice: {
+            type: Number,
+            required: true,
+        },
+        totalPrice: {
+            type: Number,
+            required: true,
+        },
+        }
+    ],
     createdAt: {
         type: Date,
         default: Date.now,

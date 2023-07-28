@@ -4,9 +4,9 @@ import {addItem , incrementQuantity , decrementQuantity , fetchCartItems } from 
 const router = express.Router();
 
 // Defining Authentication Routes.
-router.post('/api/cart/addItem/:userId/:restaurantId/:ItemId' , addItem);
-router.post('/api/cart/incrementQuantity/:userId/:restaurantId/:ItemId' , incrementQuantity);
-router.post('/api/cart/decrementQuantity/:userId/:restaurantId/:ItemId' , decrementQuantity);
+router.post('/api/cart/addItem/:userId/:restaurantId/:menuItemId' , addItem);
+router.post('/api/cart/incrementQuantity/:userId/:restaurantId/:menuItemId' , incrementQuantity);
+router.post('/api/cart/decrementQuantity/:userId/:restaurantId/:menuItemId' , decrementQuantity);
 router.get('/api/cart/:userId' , fetchCartItems);
 
 // Exporting all the Dependencies and Modules.
