@@ -102,6 +102,16 @@ export const addItem = (req, res) => {
 // -----To Increment Item In The Cart.-----
 export const incrementQuantity = (req , res) => {
     // Extracting User ID , Restaurant ID And Item ID From Request Parameters.
+    const { userId , restaurantId , menuItemId } = req.params;
+    // Extracting the Form Data From The Request.
+    const { itemName , itemQuantity , itemPrice } = req.body;
+    // Checking If User Has Filled The Required Details.
+    if(!itemName || !itemQuantity || !itemQuantity){
+        return res.status(400).send({ Error: "Please Fill The Required Fields!!!" });
+    }
+    else{
+        
+    }
     // Use The Cart Model To Find Cart Items With Given User And Item ID's.
     // Find The Specific Cart Item In The User's Cart By Item ID And Restaurant ID.
     // Increment The Quantity Of The Item In The Cart.
