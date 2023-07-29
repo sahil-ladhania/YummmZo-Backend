@@ -37,43 +37,23 @@ export const createRestaurant = (req, res) => {
 };
 // -----For Updating an Existing Restaurant by ID.-----
 export const updateRestaurant = (req, res) => {
-    const restaurantId = req.params.id;
-    const { restaurantName , cuisine , deliveryTime , priceForTwo , imageURL , restaurantCompleteAddress , mobileNumberAtRestaurant , mobileNumberOfOwner , restaurantOwnerName , restaurantOwnerEmailAddress , rating , menuItems } = req.body;
+    const { restaurantId } = req.params;
     const updatedData = req.body;
-    Restaurant.findById(restaurantId)
+    Restaurant.findByIdAndUpdate(restaurantId, updatedData, { new: true })
         .then((restaurant) => {
-            if(!restaurant){
-                return res.status(404).send({ Error : "Restaurant Not Found !!!"});
+            if (!restaurant) {
+                return res.status(404).send({ Error: "Restaurant Not Found !!!" });
+            } else {
+                return res.status(200).send({ Message: "Restaurant Successfully Updated ..." });
             }
-            else{
-                restaurant.restaurantName = updatedData.restaurantName;
-                restaurant.cuisine = updatedData.cuisine;
-                restaurant.deliveryTime = updatedData.deliveryTime;
-                restaurant.priceForTwo = updatedData.priceForTwo;
-                restaurant.imageURL = updatedData.imageURL;
-                restaurant.restaurantCompleteAddress = updatedData.restaurantCompleteAddress;
-                restaurant.mobileNumberAtRestaurant = updatedData.mobileNumberAtRestaurant;
-                restaurant.mobileNumberOfOwner = updatedData.mobileNumberOfOwner;
-                restaurant.restaurantOwnerName = updatedData.restaurantOwnerName;
-                restaurant.restaurantOwnerEmailAddress = updatedData.restaurantOwnerEmailAddress;
-                restaurant.rating = updatedData.rating;
-                restaurant.menuItems = updatedData.menuItems;
-                restaurant.save()
-                    .then(() => {
-                        return res.status(200).send({ Message : "Restaurant Successfully Updated ..."});
-                    })
-                    .catch((error) => {
-                        return res.status(500).send({ Error : `Error Occurred While Updating The Restaurant : ${error}`});
-                    })
-            }
-        })
+            })
         .catch((error) => {
-            return res.status(404).send({ Error : `Error Occured While Finding The Restaurant : ${error}`});
-        })
+            return res.status(500).send({ Error: `Error Occurred While Updating The Restaurant : ${error}` });
+        });
 };
 // -----For Deleting a Restaurant by ID.-----
 export const deleteRestaurant = (req, res) => {
-    const restaurantId = req.params.id;
+    const { restaurantId } = req.params;
     Restaurant.findByIdAndDelete(restaurantId)
         .then((deletedRestaurant) => {
             if (!deletedRestaurant){
@@ -89,7 +69,7 @@ export const deleteRestaurant = (req, res) => {
 };
 // -----For Making a Restaurant as Favourite.-----
 export const markRestaurantAsFavorite = (req, res) => {
-    const restaurantId = req.params.id;
+    const { restaurantId } = req.params;
     Restaurant.findById(restaurantId)
         .then((restaurant) => {
             if(!restaurant){
@@ -122,7 +102,7 @@ export const getAllRestaurants = (req, res) => {
 };
 // -----For Getting a Specific Restaurant by ID.-----
 export const getRestaurantById = (req, res) => {
-    const restaurantId = req.params.id;
+    const { restaurantId } = req.params;
     Restaurant.findById(restaurantId)
         .then((restaurantById) => {
             if (!restaurantById){

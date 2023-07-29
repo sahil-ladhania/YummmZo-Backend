@@ -1,7 +1,6 @@
 // Importing all the Dependencies and Modules.
 import mongoose from "mongoose";
 
-
 // Defining Database URL.
 const DB_URL = 'mongodb://localhost:27017/yummmzo_db';
 

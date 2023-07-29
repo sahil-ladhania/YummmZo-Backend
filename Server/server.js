@@ -26,11 +26,6 @@ app.use(cors());
 // Conecting to Database.
 dbConnection();
 
-// Defining Routes.
-app.get('/', (req, res) => {
-    res.send('Welcome Users 🙏🏻');
-});
-
 // Authentication Routes.
 app.use(authRoutes);
 // Restaurant Routes.

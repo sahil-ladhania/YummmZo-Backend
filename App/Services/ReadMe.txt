@@ -1,1 +1,0 @@
-This folder contains the service files that handle the business logic and interaction with the models.

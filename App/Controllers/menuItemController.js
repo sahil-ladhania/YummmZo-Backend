@@ -22,31 +22,33 @@ export const createMenuItemForRestaurant = (req, res) => {
                 if(!restaurant){
                     return res.status(404).send({ Error: "Restaurant Not Found!!!" });
                 }
-                // Create a New Instance Of MenuItem And Associate It With The Restaurant.
-                const newMenuItem = new MenuItem({
-                    imageURL,
-                    vegOrNonveg,
-                    itemName,
-                    itemPrice,
-                    itemDescription,
-                    restaurant: restaurant._id // Link The Menu Item To The Restaurant.
-                })
-                // Saving The Menu Item In The Database.
-                newMenuItem.save()
-                    .then(() => {
-                        // Add The New Menu Item To The Restaurant's MenuItems Array.
-                        restaurant.menuItems.push(newMenuItem._id);
-                        restaurant.save()
-                            .then(() => {
-                                return res.status(200).send({ Message: "Item Successfully Added To The Menu..." });
-                            })
-                            .catch((error) => {
-                                return res.status(500).send({ Error: `Error Occurred While Saving The Restaurant: ${error}` });
-                            });
+                else{
+                    // Create a New Instance Of MenuItem And Associate It With The Restaurant.
+                    const newMenuItem = new MenuItem({
+                        imageURL,
+                        vegOrNonveg,
+                        itemName,
+                        itemPrice,
+                        itemDescription,
+                        restaurant: restaurant._id // Link The Menu Item To The Restaurant.
                     })
-                    .catch((error) => {
-                        return res.status(500).send({ Error : `Error Occured While Saving The Item Data. ${error}`});
-                    })
+                    // Saving The Menu Item In The Database.
+                    newMenuItem.save()
+                        .then(() => {
+                            // Add The New Menu Item To The Restaurant's MenuItems Array.
+                            restaurant.menuItems.push(newMenuItem._id);
+                            restaurant.save()
+                                .then(() => {
+                                    return res.status(200).send({ Message: "Item Successfully Added To The Menu..." });
+                                })
+                                .catch((error) => {
+                                    return res.status(500).send({ Error: `Error Occurred While Saving The Restaurant: ${error}` });
+                                });
+                        })
+                        .catch((error) => {
+                            return res.status(500).send({ Error : `Error Occured While Saving The Item Data. ${error}`});
+                        })
+                    }
             })
             .catch((error) => {
                 return res.status(500).send({ Error: `Error Occurred While Finding The Restaurant: ${error}` });
@@ -55,35 +57,31 @@ export const createMenuItemForRestaurant = (req, res) => {
 };
 // -----For Updating an Existing Menu Item for a Restaurant-----
 export const updateMenuItemForRestaurant = (req, res) => {
-    // Extracting Restaurant ID From Request Parameters.
-    const {restaurantId , menuItemId} = req.params;
+    // Extracting Restaurant ID and Menu Item ID From Request Parameters.
+    const { restaurantId, menuItemId } = req.params;
     // Extracting the Form Data From The Request.
-    const {imageURL , vegOrNonveg , itemName , itemPrice , itemDescription} = req.body;
-    const updatedItem = req.body;
-    MenuItem.findById(menuItemId)
+    const { imageURL, vegOrNonveg, itemName, itemPrice, itemDescription } = req.body;
+    // Create an object with the updated data
+    const updatedItem = {
+        imageURL,
+        vegOrNonveg,
+        itemName,
+        itemPrice,
+        itemDescription,
+    };
+    MenuItem.findByIdAndUpdate(menuItemId, updatedItem, { new: true })
         .then((item) => {
-            if(!item){
-                return res.status(404).send({ Error : "Item Not Found !!!"});
-            }
-            else{
-                item.imageURL = updatedItem.imageURL;
-                item.vegOrNonveg = updatedItem.vegOrNonveg;
-                item.itemName = updatedItem.itemName;
-                item.itemPrice = updatedItem.itemPrice;
-                item.itemDescription = updatedItem.itemDescription;
-                item.save()
-                    .then(() => {
-                        return res.status(200).send({ Message : "Item Successfully Updated ..."});
-                    })
-                    .catch(() => {
-                        return res.status(500).send({ Error : `Error Occurred While Updating The Item : ${error}`});
-                    })
+            if (!item) {
+                return res.status(404).send({ Error: "Item Not Found !!!" });
+            } 
+            else {
+                return res.status(200).send({ Message: "Item Successfully Updated ..." });
             }
         })
         .catch((error) => {
-            return res.status().send({ Error : `Error Occured While Finding The Item : ${error}`});
-        })
-};
+            return res.status(500).send({ Error: `Error Occurred While Updating The Item : ${error}` });
+        });
+    };
 // -----For Deleting a Menu Item by ID for a Restaurant-----
 export const deleteMenuItemForRestaurant = (req, res) => {
     // Extracting Restaurant ID From Request Parameters.
@@ -114,7 +112,8 @@ export const getAllMenuItemsForRestaurant = (req, res) => {
     const {restaurantId} = req.params;
     // For Getting All The MenuItems For The Restaurant.
     Restaurant.findById(restaurantId)
-        .populate('menuItems') // Populate The menuItems Array With The Referenced Documents.
+        // Populate The menuItems Array With The Referenced Documents.
+        .populate('menuItems') 
         .then((restaurant) => {
             if(!restaurant){
                 return res.status(404).send({ Error: 'Restaurant Not Found !!!' });
@@ -132,13 +131,10 @@ export const getAllMenuItemsForRestaurant = (req, res) => {
 // -----For Fetching a Specific Menu Item by ID for a Restaurant-----
 export const getMenuItemByIdForRestaurant = (req, res) => {
     const {restaurantId , menuItemId} = req.params;
-    console.log('restaurantId:', restaurantId);
-    console.log('menuItemId:', menuItemId);
-    // Use mongoose.Types.ObjectId instead of ObjectId constructor
+    // Use mongoose.Types.ObjectId Instead Of ObjectId Constructor.
     const objectIdMenuItemId = mongoose.Types.ObjectId.createFromHexString(menuItemId);
     MenuItem.findById(objectIdMenuItemId)
         .then((itemById) => {
-            console.log('menuById:', itemById);
             if (!itemById){
                 return res.status(404).send({ Error: 'Item Not Found !!!' });
             }

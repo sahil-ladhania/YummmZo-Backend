@@ -57,9 +57,10 @@ const generateToken = (userId) => {
 }
 // -----User Login.-----
 export const userLogin = (req,res) => {
-    // Checking For Required Feilds.
+    // Extracting the Form Data from The Request.
     const { email , password } = req.body;
     // Validating Input Feilds.
+    // Checking For Required Feilds.
     if ( !email || !password ){
         return res.status(400).send({ Error : "Please Fill The Required Feilds !!!"});
     }
