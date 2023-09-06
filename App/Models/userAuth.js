@@ -25,6 +25,16 @@ const userSchema = new mongoose.Schema({
     tokens : {
         type : [String],
         maxlength : 500
+    },
+    googleAccessToken : {
+        type : [String],
+        maxlength : 500,
+        unique : true
+    },
+    googleRefreshToken : {
+        type : [String],
+        maxlength : 500,
+        unique : true
     }
 });
 

@@ -2,6 +2,7 @@
 import User from '../Models/userAuth.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import passport from "passport";
 
 // Controller Functions to handle a specific API Endpoint.
 // -----For User Registration.-----
@@ -55,7 +56,7 @@ const generateToken = (userId) => {
     const token = jwt.sign({userId} , process.env.JWT_SECRET , {expiresIn : "1h"});
     return token;
 }
-// -----User Login.-----
+// -----For User Login.-----
 export const userLogin = (req,res) => {
     // Extracting the Form Data from The Request.
     const { email , password } = req.body;
@@ -102,4 +103,17 @@ export const userLogin = (req,res) => {
             return res.status(500).send({ Error : `Error Occured While Fetching The User Data. ${error}`});
         })
     }
+}
+
+// -----For Google Authentication.-----
+export const handleGoogleAuthCallback = (req , res) => {
+    // Checking If The User Object Exist In The Request.
+    if(!req.newUserFromGoogle){
+        // If User Object Doesnt Exist.
+        return res.status(401).json({ Error : "Authentication Failed !!!"});
+    }
+    // Generating JWT Token With User ID.
+    const token = generateToken(req.newUserFromGoogle._id);
+    // Redirecting user To Home Page.
+    res.redirect('/home');
 }
