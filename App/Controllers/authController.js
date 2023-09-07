@@ -105,15 +105,15 @@ export const userLogin = (req,res) => {
     }
 }
 
-// -----For Google Authentication.-----
+// -----For Initiating Google Authentication.-----
+export const initiateGoogleOAuth = () => {
+    return passport.authenticate('google', { scope: ['profile'] })
+}
+// -----For Handeling Google OAuth Callback.-----
 export const handleGoogleAuthCallback = (req , res) => {
-    // Checking If The User Object Exist In The Request.
-    if(!req.newUserFromGoogle){
-        // If User Object Doesnt Exist.
-        return res.status(401).json({ Error : "Authentication Failed !!!"});
+    return passport.authenticate('google', { failureRedirect: '/signup' }),
+    function(req, res) {
+        // On Successful Authentication, Redirect The User To The Home Page.
+        res.redirect('/home');
     }
-    // Generating JWT Token With User ID.
-    const token = generateToken(req.newUserFromGoogle._id);
-    // Redirecting user To Home Page.
-    res.redirect('/home');
 }

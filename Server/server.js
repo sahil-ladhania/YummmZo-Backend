@@ -10,29 +10,12 @@ import cuisineRoutes from '../App/Routes/cuisineRoutes.js';
 import cartRoutes from '../App/Routes/cartRoutes.js';
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 import passport from 'passport';
-import { Strategy as GoogleStrategy } from "passport-google-oauth20";
-import session from 'express-session';
 
 // Environment Variables.
 dotenv.config();
 
 // Creating an Express App.
 const app = express();
-
-// Set up session middleware
-app.use(session({ 
-    secret: process.env.GOOGLE_CLIENT_SECRET, 
-    resave: true, 
-    saveUninitialized: true,
-    cookie : {
-        sameSite : 'None',
-        secure : true
-    }
-}));
-
-// Initialize Passport
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Defining Port.
 const port = 81;

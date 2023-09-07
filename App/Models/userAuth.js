@@ -3,6 +3,11 @@ import mongoose from "mongoose";
 
 // Defining User Schema.
 const userSchema = new mongoose.Schema({
+    GoogleId : {
+        type: String,
+        required: true,
+        unique:true
+    },
     firstName : {
         type : String,
         required : true
@@ -35,7 +40,7 @@ const userSchema = new mongoose.Schema({
         type : [String],
         maxlength : 500,
         unique : true
-    }
+    },
 });
 
 // Defining User Model.
