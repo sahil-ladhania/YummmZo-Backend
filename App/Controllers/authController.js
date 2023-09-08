@@ -106,14 +106,28 @@ export const userLogin = (req,res) => {
 }
 
 // -----For Initiating Google Authentication.-----
-export const initiateGoogleOAuth = () => {
-    return passport.authenticate('google', { scope: ['profile'] })
-}
+export const initiateGoogleOAuth = passport.authenticate('google', { scope: ['profile'] });
 // -----For Handeling Google OAuth Callback.-----
 export const handleGoogleAuthCallback = (req , res) => {
-    return passport.authenticate('google', { failureRedirect: '/signup' }),
-    function(req, res) {
-        // On Successful Authentication, Redirect The User To The Home Page.
-        res.redirect('/home');
-    }
-}
+    passport.authenticate('google', (err , user) => {
+        if(err){
+            return res.redirect('/login');
+        }
+        if(user){
+            const {given_name , family_name , email } = user;
+            const newUser = new User({
+                given_name, 
+                family_name, 
+                email
+            })
+            newUser.save((err) => {
+                if(err){
+                    return res.redirect('/signup'); 
+                }
+                else{
+                    return res.redirect('/home'); 
+                }
+            })
+        }
+    })(req , res);
+};
