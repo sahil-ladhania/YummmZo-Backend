@@ -8,6 +8,8 @@ import restaurantRoutes from '../App/Routes/restaurantRoutes.js';
 import menuItemRoutes from '../App/Routes/menuItemRoutes.js';
 import cuisineRoutes from '../App/Routes/cuisineRoutes.js';
 import cartRoutes from '../App/Routes/cartRoutes.js';
+import restaurantCuisineSearchRoutes from '../App/Routes/restaurantCuisineSearchRoutes.js'
+import menuSearchRoutes from '../App/Routes/menuSearchRoutes.js'
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 import passport from 'passport';
 
@@ -37,6 +39,11 @@ app.use(menuItemRoutes);
 app.use(cuisineRoutes);
 // Cart Routes.
 app.use(cartRoutes);
+// Restaurant / Cuisine Search Routes.
+app.use(restaurantCuisineSearchRoutes);
+// MenuItem Search Routes.
+app.use(menuSearchRoutes);
+
 
 // API for Test Route.
 app.get('/test' , requireLogin , (req,res) => {
