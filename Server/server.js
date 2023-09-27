@@ -10,6 +10,7 @@ import cuisineRoutes from '../App/Routes/cuisineRoutes.js';
 import cartRoutes from '../App/Routes/cartRoutes.js';
 import restaurantCuisineSearchRoutes from '../App/Routes/restaurantCuisineSearchRoutes.js'
 import menuSearchRoutes from '../App/Routes/menuSearchRoutes.js'
+import restaurantFilteringRoutes from '../App/Routes/restaurantFilteringRoutes.js';
 import requireLogin from '../App/Middlewares/authMiddleware.js';
 import passport from 'passport';
 
@@ -43,7 +44,8 @@ app.use(cartRoutes);
 app.use(restaurantCuisineSearchRoutes);
 // MenuItem Search Routes.
 app.use(menuSearchRoutes);
-
+// Restaurant Filtering Routes.
+app.use(restaurantFilteringRoutes);
 
 // API for Test Route.
 app.get('/test' , requireLogin , (req,res) => {

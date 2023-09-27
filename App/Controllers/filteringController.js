@@ -1,57 +1,76 @@
 // Import necessary dependencies and files.
-import Restaurant from "../Models/restaurantSchema";
+import Restaurant from "../Models/restaurantSchema.js";
 
 // Controller function to handle sorting and filtering.
 // -----Controller Function For Sorting Restaurants That Has Fastest Delivery.-----
 export const sortByFastDelivery = (req , res) => {
-    // 1. Extract query parameters for filtering (e.g., fastDelivery) from req.query.
-    // 2. Create an initial database query to fetch restaurants.
-    // 3. Apply filtering criteria for fast delivery if specified.
-    //    - Substep 3.1: Implement filtering logic here.
-    // 4. Execute the query to retrieve filtered restaurants.
-    // 5. Handle successful query execution.
-    //    - Substep 4.1: Handle successful query execution.
-    // 6. Implement response logic to send the filtered data.
-    //    - Substep 4.2: Implement response logic here to send the filtered data.
-    // 7. Implement error handling logic in case of query execution failure.
-    //    - Substep 4.3: Implement error handling logic in case of query execution failure.
+    // Creating An Initial Database Query To Fetch Restaurants.
+    const query = Restaurant.find();
+    // Appling Filtering Criteria For Fast Delivery.
+    query.where('deliveryTime').gte(20).lte(30);
+    // Executing The Query To Retrieve Filtered Restaurants.
+    query.exec()
+        // Implementing Response Logic To Send The Filtered Data.
+        .then((fastDeliveryRestaurants) => {
+            res.status(200).send(fastDeliveryRestaurants);
+        })
+        // Implementing Error Handling Logic In Case Of Query Execution Failure.
+        .catch((error) => {
+            console.error("Error Fetching Restaurants That Has Fast Delivery !!!", error);
+            res.status(500).send({ Error : "Error Fetching Restaurants That Has Fast Delivery !!!" });
+        });
 };
 // -----Controller Function For Sorting Restaurants That Has Rating above 4.0.-----
 export const sortByRating = (req , res) => {
-    // 1. Extract query parameters for sorting (e.g., rating) from req.query.
-    // 2. Create an initial database query to fetch restaurants.
-    // 3. Apply sorting criteria for rating (descending order) if specified.
-    // 4. Execute the query to retrieve sorted restaurants.
-    // 5. Handle successful query execution.
-    //    - Substep 4.1: Handle successful query execution.
-    // 6. Implement response logic to send the sorted data.
-    //    - Substep 4.2: Implement response logic here to send the sorted data.
-    // 7. Implement error handling logic in case of query execution failure.
-    //    - Substep 4.3: Implement error handling logic in case of query execution failure.
+    // Creating An Initial Database Query To Fetch Restaurants.
+    const query = Restaurant.find();
+    // Appling Filtering Criteria For High Rating Restaurant.
+    query.where('rating').gte(4.0).lte(5.0);
+    // Executing The Query To Retrieve Filtered Restaurants.
+    query.exec()
+        // Implementing Response Logic To Send The Filtered Data.
+        .then((highRatingRestaurants) => {
+            res.status(200).send(highRatingRestaurants);
+        })
+        // Implementing Error Handling Logic In Case Of Query Execution Failure.
+        .catch((error) => {
+            console.error("Error Fetching Restaurants That Has High Rating !!!", error);
+            res.status(500).send({ Error : "Error Fetching Restaurants That Has High Rating !!!" });
+        });
 };
 // -----Controller Function For Sorting Restaurants From Low To High Price.-----
 export const sortByCostLowToHigh = (req , res) => {
-    // 1. Extract query parameters for sorting (e.g., cost) from req.query.
-    // 2. Create an initial database query to fetch restaurants.
-    // 3. Apply sorting criteria for cost (ascending order) if specified.
-    // 4. Execute the query to retrieve sorted restaurants.
-    // 5. Handle successful query execution.
-    //    - Substep 4.1: Handle successful query execution.
-    // 6. Implement response logic to send the sorted data.
-    //    - Substep 4.2: Implement response logic here to send the sorted data.
-    // 7. Implement error handling logic in case of query execution failure.
-    //    - Substep 4.3: Implement error handling logic in case of query execution failure.
+    // Creating An Initial Database Query To Fetch Restaurants.
+    const query = Restaurant.find();
+    // Appling Filtering Criteria For Price Low To High Restaurant.
+    query.sort('priceForTwo');
+    // Executing The Query To Retrieve Filtered Restaurants.
+    query.exec()
+        // Implementing Response Logic To Send The Filtered Data.   
+        .then((costLTHRestaurants) => {
+            res.status(200).send(costLTHRestaurants);
+        })
+        // Implementing Error Handling Logic In Case Of Query Execution Failure.
+        .catch((error) => {
+            console.error("Error Fetching Restaurants That Has Cost Low To High !!!", error);
+            res.status(500).send({ Error : "Error Fetching Restaurants That Has Cost Low To High !!!" });
+        });
 };
 // -----Controller Function For Sorting Restaurants From High To Low Price.-----
 export const sortByCostHighToLow = (req , res) => {
-    // 1. Extract query parameters for sorting (e.g., cost) from req.query.
-    // 2. Create an initial database query to fetch restaurants.
-    // 3. Apply sorting criteria for cost (descending order) if specified.
-    // 4. Execute the query to retrieve sorted restaurants.
-    // 5. Handle successful query execution.
-    //    - Substep 4.1: Handle successful query execution.
-    // 6. Implement response logic to send the sorted data.
-    //    - Substep 4.2: Implement response logic here to send the sorted data.
-    // 7. Implement error handling logic in case of query execution failure.
-    //    - Substep 4.3: Implement error handling logic in case of query execution failure.
+    // Creating An Initial Database Query To Fetch Restaurants.
+    const query = Restaurant.find();
+    // Appling Filtering Criteria For Price High To Low Restaurant.
+    query.sort('-priceForTwo');
+    // Executing The Query To Retrieve Filtered Restaurants.
+    query.exec()
+        // Implementing Response Logic To Send The Filtered Data.   
+        .then((costHTLRestaurants) => {
+            res.status(200).send(costHTLRestaurants);
+        })
+        // Implementing Error Handling Logic In Case Of Query Execution Failure.
+        .catch((error) => {
+            console.error("Error Fetching Restaurants That Has Cost High To Low !!!", error);
+            res.status(500).send({ Error : "Error Fetching Restaurants That Has Cost High To Low !!!" });
+        });
 };
