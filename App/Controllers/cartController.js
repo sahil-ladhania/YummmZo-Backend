@@ -1,6 +1,5 @@
 // Importing Necessary Dependencies and Files.
 import Cart from "../Models/cartSchema.js";
-import User from "../Models/userAuth.js";
 
 // Controller Functions to handle a specific API Endpoint.
 // -----To Add An Item To The Cart.-----

@@ -2,7 +2,7 @@
 import mongoose from "mongoose";
 import MenuItem from "./menuItemSchema.js";
 import Restaurant from "./restaurantSchema.js";
-import User from "./userAuth.js";
+import User from "./userSchema.js";
 
 // Defining Cart Item Schema.
 const cartItemSchema = new mongoose.Schema({

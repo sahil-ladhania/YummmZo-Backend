@@ -11,8 +11,6 @@ import cartRoutes from '../App/Routes/cartRoutes.js';
 import restaurantCuisineSearchRoutes from '../App/Routes/restaurantCuisineSearchRoutes.js'
 import menuSearchRoutes from '../App/Routes/menuSearchRoutes.js'
 import restaurantFilteringRoutes from '../App/Routes/restaurantFilteringRoutes.js';
-import requireLogin from '../App/Middlewares/authMiddleware.js';
-import passport from 'passport';
 
 // Environment Variables.
 dotenv.config();
@@ -46,11 +44,6 @@ app.use(restaurantCuisineSearchRoutes);
 app.use(menuSearchRoutes);
 // Restaurant Filtering Routes.
 app.use(restaurantFilteringRoutes);
-
-// API for Test Route.
-app.get('/test' , requireLogin , (req,res) => {
-    res.send("Protected Routes"); 
-})
 
 // Listening on Port.
 app.listen(port, () => {
