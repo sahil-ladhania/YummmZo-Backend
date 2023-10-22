@@ -19,15 +19,19 @@ dotenv.config();
 // Creating an Express App.
 const app = express();
 
-// Configuring Session.
-const sessionSecret = "IWILLBECOMEABILLIONAIREONEDAY";
-app.use(
-    session({
-        secret : sessionSecret,
-        resave : false,
-        saveUninitialized : true
-    })
-)
+// Creating Express Session.
+app.use(session({
+    secret : "SAHILWILLBECOMEABILLIONAIRE",
+    name : "session_id",
+    resave : false,
+    saveUninitialized : true,
+    cookie : { 
+        path: '/', 
+        httpOnly: true, 
+        secure: false, 
+        maxAge: null
+    }
+}))
 
 // Defining Port.
 const port = 81;

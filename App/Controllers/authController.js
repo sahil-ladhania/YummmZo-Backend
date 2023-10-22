@@ -1,4 +1,5 @@
 // Importing Necessary Dependencies and Files.
+import session from 'express-session';
 import User from '../Models/userSchema.js';
 import bcrypt from 'bcrypt';
 
@@ -17,27 +18,26 @@ export const registerUser = (req, res) => {
         const saltRounds = 10;
         bcrypt
         .hash(password, saltRounds)
-        .then((hashedPassword) => {
-            // Create a User Document.
-            User.create({
-                firstName: firstName,
-                lastName: lastName,
-                email: email,
-                password: hashedPassword,
-            })
-            .then((newUser) => {
-                // Set a Session Cookie.
-                req.session.userId = newUser._id;
-                // Send a Response.
-                res.status(201).send({ Success: "User Registered Successfully ..." });
+            .then((hashedPassword) => {
+                // Create a User Document.
+                User.create({
+                    firstName: firstName,
+                    lastName: lastName,
+                    email: email,
+                    password: hashedPassword,
+                })
+                    .then((newUser) => {
+                        // Send a Response.
+                        res.status(201).send({ Success: "User Registered Successfully ..." });
+                        console.log(newUser);
+                    })
+                    .catch((error) => {
+                        res.status(500).send({Error: "Error During User Registration (Creating User) !!!" , error});
+                    });
             })
             .catch((error) => {
-                res.status(500).send({Error: "Error During User Registration (Creating User) !!!" , error});
+                res.status(500).send({Error: "Error During User Registration (Hashing Password) !!!" , error});
             });
-        })
-        .catch((error) => {
-            res.status(500).send({Error: "Error During User Registration (Hashing Password) !!!" , error});
-        });
     };
 };
 
@@ -65,6 +65,7 @@ export const loginUser = (req, res) => {
                             if(result){
                                 // Set a Session Cookie.
                                 req.session.userId = user._id;
+                                res.cookie("my_session_id" , user._id);
                                 // Send a Response.
                                 res.status(200).send({ Success: "User Logged In Successfully ..." });
                             }
