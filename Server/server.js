@@ -31,7 +31,7 @@ app.use(session({
         secure: false, 
         maxAge: null
     }
-}))
+}));
 
 // Defining Port.
 const port = 81;
