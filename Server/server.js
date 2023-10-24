@@ -1,7 +1,6 @@
 // Importing all the Dependencies and Modules.
 import express from 'express';
 import cors from 'cors';
-import session from 'express-session';
 import dbConnection from '../Config/dbConnection.js'
 import dotenv from 'dotenv';
 import authRoutes from '../App/Routes/authRoutes.js';
@@ -18,20 +17,6 @@ dotenv.config();
 
 // Creating an Express App.
 const app = express();
-
-// Creating Express Session.
-app.use(session({
-    secret : "SAHILWILLBECOMEABILLIONAIRE",
-    name : "session_id",
-    resave : false,
-    saveUninitialized : true,
-    cookie : { 
-        path: '/', 
-        httpOnly: true, 
-        secure: false, 
-        maxAge: null
-    }
-}));
 
 // Defining Port.
 const port = 81;

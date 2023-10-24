@@ -1,7 +1,7 @@
 // Importing Necessary Dependencies and Files.
-import session from 'express-session';
 import User from '../Models/userSchema.js';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 // Controller Functions to handle a specific API Endpoint.
 // -----For User Registration.-----
@@ -63,11 +63,11 @@ export const loginUser = (req, res) => {
                         .then((result) => {
                             // If Passwords Match.
                             if(result){
-                                // Set a Session Cookie.
-                                req.session.userId = user._id;
-                                res.cookie("my_session_id" , user._id);
+                                // Generate JWT Token.
+                                const jwt_token = jwt.sign({_id : user._id} , process.env.JWT_SECRET , {expiresIn : "7d"});
+                                console.log(`Token Generated For User : ${jwt_token}`);
                                 // Send a Response.
-                                res.status(200).send({ Success: "User Logged In Successfully ..." });
+                                res.status(200).send({ Success: "User Logged In Successfully ..." , user , jwt_token });
                             }
                             // If Passwords Dont Match.
                             else{
