@@ -149,5 +149,19 @@ export const decrementQuantity = (req , res) => {
 // -----To Fetch All Cart Items.----
 export const fetchCartItems = (req , res) => {
     // Receive Parameters.
+    const {userId} = req.params;
     // Use the Cart Model To Find Cart Items.
+    Cart.findOne({userId})
+        .then((cart) => {
+            if(!cart){
+                return res.status(404).send({Error : "Cart Not Found For This User !!!"});
+            }
+            else{
+                const cartItems = cart.cartItems;
+                return res.status(200).send({Message : "Cart Items For You ..." , cartItems});
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({Error : "Error Finding The Cart Items !!!", error})
+        })
 }
