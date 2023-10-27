@@ -127,25 +127,135 @@ export const addItem = (req, res) => {
 };
 
 // -----To Increment Item In The Cart.-----
-export const incrementQuantity = (req , res) => {
-    // Extracting User ID , Restaurant ID And Item ID From Request Parameters.
+export const incrementQuantity = (req, res) => {
+    // Extracting User ID, Restaurant ID, and Item ID from Request Parameters.
+    const { userId, restaurantId, menuItemId } = req.params;
+    console.log(userId);
+    console.log(restaurantId);
+    console.log(menuItemId);
     // Extracting the Form Data From The Request.
+    const { itemName, itemQuantity, itemPrice } = req.body;
+    console.log(itemName);
+    console.log(itemQuantity);
+    console.log(itemPrice);
     // Checking If User Has Filled The Required Details.
-    // Use The Cart Model To Find Cart Items With Given User And Item ID's.
-    // Find The Specific Cart Item In The User's Cart By Item ID And Restaurant ID.
-    // Increment The Quantity Of The Item In The Cart.
-    // Recalculate The Total Price.
-    // Save The Updated Cart To The Database.
-}
+    if (!itemName || !itemQuantity || !itemPrice) {
+        return res.status(400).json({ Error: "Please Fill All The Required Fields !!!" });
+    } else {
+        // Use The Cart Model To Find Cart Items With Given User And Item ID's.
+        Cart.findOne({ userId })
+            .then((usersCart) => {
+                if (!usersCart) {
+                    return res.status(404).json({ Error: "User's Cart Not Found !!!" });
+                }
+                // Find The Specific Cart Item In The User's Cart By Item ID And Restaurant ID.
+                const cartItemToUpdate = usersCart.cartItems.find(
+                    (item) =>
+                        item.menuItemId.toString() === menuItemId
+                        &&
+                        item.restaurantId.toString() === restaurantId
+                );
+                if (!cartItemToUpdate) {
+                    return res.status(404).json({ Error: "Item Not Found In The Cart !!!" });
+                }
+                // Increment The Quantity Of The Item In The Cart.
+                cartItemToUpdate.itemQuantity += itemQuantity; // Assuming itemQuantity is a number
+                // Recalculate The Total Price.
+                cartItemToUpdate.totalPrice = cartItemToUpdate.itemPrice * cartItemToUpdate.itemQuantity;
+                const itemsTotal = usersCart.cartItems.reduce((total, cartItem) => total + cartItem.totalPrice, 0);
+                const deliveryFee = 0; 
+                const platformFee = 2; 
+                const gstAndRestaurantCharges = itemsTotal * 0.18; 
+                const toPay = itemsTotal + deliveryFee + platformFee + gstAndRestaurantCharges;
+                usersCart.itemsTotal = itemsTotal;
+                usersCart.deliveryFee = deliveryFee;
+                usersCart.platformFee = platformFee;
+                usersCart.gstAndRestaurantCharges = gstAndRestaurantCharges;
+                usersCart.toPay = toPay;
+                // Save The Updated Cart To The Database.
+                usersCart
+                    .save()
+                    .then((updatedCart) => {
+                        return res.status(200).json({Message: "Item Quantity Incremented Successfully ...", updatedCart});
+                    })
+                    .catch((error) => {
+                        return res.status(500).json({Error: "Error Saving The Updated Cart !!!", error});
+                    });
+            })
+            .catch((error) => {
+                return res.status(500).json({Error: "Error Finding User's Cart !!!", error});
+            });
+    }
+};
+
 // -----To Decrement Item In The Cart.-----
-export const decrementQuantity = (req , res) => {
-    // Receive Parameters.
-    // Use the Cart Model To Find Cart Items With Given User And Item ID's.
-    // Retrieve Cart Item.
-    // Update Quantity.
-    // Handle Errors.
-    // Return Response.
-}
+export const decrementQuantity = (req, res) => {
+    // Extracting User ID, Restaurant ID, and Item ID from Request Parameters.
+    const { userId, restaurantId, menuItemId } = req.params;
+    console.log(userId);
+    console.log(restaurantId);
+    console.log(menuItemId);
+    // Extracting the Form Data From The Request.
+    const { itemName, itemQuantity, itemPrice } = req.body;
+    console.log(itemName);
+    console.log(itemQuantity);
+    console.log(itemPrice);
+    // Checking If User Has Filled The Required Details.
+    if (!itemName || !itemQuantity || !itemPrice) {
+        return res.status(400).send({Error: "Please Fill All The Required Fields !!!"});
+    } else {
+        // Use The Cart Model To Find Cart Items With Given User And Item ID's.
+        Cart.findOne({ userId })
+            .then((usersCart) => {
+                if (!usersCart) {
+                    return res.status(404).send({Error: "User's Cart Not Found !!!"});
+                }
+                // Find The Specific Cart Item In The User's Cart By Item ID And Restaurant ID.
+                const cartItemToUpdate = usersCart.cartItems.find(
+                    (item) =>
+                        item.menuItemId.toString() === menuItemId
+                        &&
+                        item.restaurantId.toString() === restaurantId
+                );
+                console.log(cartItemToUpdate);
+                if (!cartItemToUpdate) {
+                    return res.status(404).send({Error: "Item Not Found In The Cart !!!"});
+                }
+                // Decrement The Quantity Of The Item In The Cart.
+                if (cartItemToUpdate.itemQuantity <= itemQuantity) {
+                    usersCart.cartItems = usersCart.cartItems.filter((item) => item !== cartItemToUpdate);
+                } 
+                else {
+                    cartItemToUpdate.itemQuantity -= itemQuantity;
+                }
+                // Recalculate The Total Price.
+                cartItemToUpdate.totalPrice = cartItemToUpdate.itemPrice * cartItemToUpdate.itemQuantity;
+                const itemsTotal = usersCart.cartItems.reduce((total, cartItem) => total + cartItem.totalPrice, 0);
+                const deliveryFee = 0;
+                const platformFee = 2;
+                const gstAndRestaurantCharges = itemsTotal * 0.18;
+                const toPay = itemsTotal + deliveryFee + platformFee + gstAndRestaurantCharges;
+                usersCart.itemsTotal = itemsTotal;
+                usersCart.deliveryFee = deliveryFee;
+                usersCart.platformFee = platformFee;
+                usersCart.gstAndRestaurantCharges = gstAndRestaurantCharges;
+                usersCart.toPay = toPay;
+                // Save The Updated Cart To The Database.
+                usersCart
+                    .save()
+                    .then((updatedCart) => {
+                        return res.status(200).send({Message: "Item Quantity Decremented Successfully ...", updatedCart});
+                    })
+                    .catch((error) => {
+                        return res.status(500).send({Error: "Error Saving The Updated Cart !!!", error});
+                    });
+            })
+            .catch((error) => {
+                return res.status(500).send({Error: "Error Finding User's Cart !!!", error});
+            });
+    }
+};
+
 // -----To Fetch All Cart Items.----
 export const fetchCartItems = (req , res) => {
     // Receive Parameters.
