@@ -84,3 +84,20 @@ export const loginUser = (req, res) => {
             });
     };
 };
+
+// -----For Getting A User-----
+export const getUser = (req, res) => {
+    const { userId } = req.params;
+    User.findById(userId)
+        .then((userById) => {
+            if(!userById){
+                return res.status(404).send({ Error: "No Such User Exists !!!" });
+            }
+            else{
+                return res.status(200).send(userById);
+            }
+        })
+        .catch((error) => {
+            return res.status(500).send({ Error : `Error Occured While Fetching User By ID : ${error}`});
+        })
+}
