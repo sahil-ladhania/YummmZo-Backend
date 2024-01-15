@@ -45,6 +45,13 @@ app.use(menuSearchRoutes);
 // Restaurant Filtering Routes.
 app.use(restaurantFilteringRoutes);
 
+// Global Check Middleware
+app.use((err , req , res , next) => {
+    res.status(500).json({
+        Error : err
+    });
+})
+
 // Listening on Port.
 app.listen(port, () => {
     console.log(`YummmZo listening on port ${port}...`);

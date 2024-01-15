@@ -28,7 +28,7 @@ export const registerUser = (req, res) => {
                 })
                     .then((newUser) => {
                         // Send a Response.
-                        res.status(201).send({ Success: "User Registered Successfully ..." });
+                        res.status(201).send({ Success: "User Successfully Registered ..." });
                         console.log(newUser);
                     })
                     .catch((error) => {
