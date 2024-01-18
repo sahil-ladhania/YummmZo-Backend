@@ -8,6 +8,11 @@ const restaurantSchema = new mongoose.Schema({
         type:String,
         required:true
     },
+    // Here will be the Array of Cuisines offered by particular Restaurant
+    // cuisineOffered : {
+    //     type:String,
+    //     required:true
+    // },
     cuisine : {
         type: String,
         required: true
@@ -54,8 +59,13 @@ const restaurantSchema = new mongoose.Schema({
             type : mongoose.Schema.Types.ObjectId,
             ref: "MenuItem"
         }
-    ]
-})
+    ],
+    // Here will be the Admin ID of the Particular Restuarant
+    // adminId : {
+    //     type: Number,
+    //     required : true
+    // }
+},{timestamps : true})
 
 // Defining User Model.
 const Restaurant = mongoose.model('Restaurant' , restaurantSchema);

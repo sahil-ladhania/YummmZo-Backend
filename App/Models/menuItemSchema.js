@@ -27,8 +27,13 @@ const menuItemSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Restaurant',
         required: true
-    }
-})
+    },
+    // Here will be the Cuisine ID of the particular Menu Item
+    // cuisineId : {
+    //     type:String,
+    //     required : true
+    // }
+},{timestamps : true})
 
 // Defining User Model.
 const MenuItem = mongoose.model('MenuItem' , menuItemSchema);

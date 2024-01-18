@@ -10,8 +10,13 @@ const cuisineSchema = new mongoose.Schema({
     cuisineName : {
         type:String,
         required:true
-    }
-})
+    },
+    // Here will be Array of Restaurants that serve this particular Cuisine
+    // restaurantsList : {
+    //     type:String,
+    //     required:true
+    // }
+},{timestamps : true})
 
 // Defining User Model.
 const Cuisine = mongoose.model('Cuisine' , cuisineSchema);

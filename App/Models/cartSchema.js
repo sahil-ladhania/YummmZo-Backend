@@ -84,7 +84,7 @@ const cartSchema = new mongoose.Schema({
         type: Number,
         default: 0
     }
-});
+},{timestamps : true});
 // Defining User Model.
 const Cart = mongoose.model('Cart' , cartSchema);
 

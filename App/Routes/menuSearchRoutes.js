@@ -2,9 +2,10 @@
 import express from "express";
 const router = express.Router();
 import { searchMenuItems } from "../Controllers/searchController.js";
+import { validateSearch } from "../Middlewares/Search/validateSearchMiddleware.js";
 
-// Defining Restaurant and Cuisine Search Routes.
-router.get('/api/search/menuitems/:query' , searchMenuItems);
+// Defining Search In Menu Routes.
+router.get('/api/search/menuitems/:query' , validateSearch , searchMenuItems);
 
 // Exporting all the Dependencies and Modules.
 export default router;
