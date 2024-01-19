@@ -5,7 +5,7 @@ import { searchMenuItems } from "../Controllers/searchController.js";
 import { validateSearch } from "../Middlewares/Search/validateSearchMiddleware.js";
 
 // Defining Search In Menu Routes.
-router.get('/api/search/menuitems/:query' , validateSearch , searchMenuItems);
+router.get('/api/restaurants/:restaurantId/menuitems/search/:query' , validateSearch , searchMenuItems);
 
 // Exporting all the Dependencies and Modules.
 export default router;
