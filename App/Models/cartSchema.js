@@ -85,7 +85,7 @@ const cartSchema = new mongoose.Schema({
         default: 0
     }
 },{timestamps : true});
-// Defining User Model.
+// Defining Cart Model.
 const Cart = mongoose.model('Cart' , cartSchema);
 
 // Exporting all the Dependencies and Modules.
