@@ -1,12 +1,19 @@
 // Importing all the Dependencies and Modules.
 import express from "express";
+import { addReplyToComment , getAllRepliesForComment , updateReply , deleteReply } from "../Controllers/commentReplyController.js";
+import { validateCommentReplies } from '../Middlewares/ReviewsAndComments/validateCommentRepliesMiddleware.js';
 const router = express.Router();
 
+// Defining Comment Replies Routes Middlewares.
+// router.post('/api/user/comment-replies/:commentId' , validateCommentReplies , addReplyToComment);
+// router.get('/api/user/comment-replies/:commentId' , validateCommentReplies , getAllRepliesForComment);
+// router.put('/api/user/comment-replies/:replyId' , validateCommentReplies , updateReply);
+// router.delete('/api/user/comment-replies/:replyId' , validateCommentReplies , deleteReply);
 // Defining Comment Replies Routes.
-router.post('/api/user/comment-replies/:commentId' , );
-router.get('/api/user/comment-replies/:commentId' , );
-router.put('/api/user/comment-replies/:replyId' , );
-router.delete('/api/user/comment-replies/:replyId' , );
+router.post('/api/user/comment-replies/:commentId' , addReplyToComment);
+router.get('/api/user/comment-replies/:commentId' , getAllRepliesForComment);
+router.put('/api/user/comment-replies/:replyId' , updateReply);
+router.delete('/api/user/comment-replies/:replyId' , deleteReply);
 
 // Exporting all the Dependencies and Modules.
 export default router;
