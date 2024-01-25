@@ -11,6 +11,9 @@ import cartRoutes from '../App/Routes/cartRoutes.js';
 import restaurantCuisineSearchRoutes from '../App/Routes/restaurantCuisineSearchRoutes.js'
 import menuSearchRoutes from '../App/Routes/menuSearchRoutes.js'
 import restaurantFilteringRoutes from '../App/Routes/restaurantFilteringRoutes.js';
+import reviewRoutes from '../App/Routes/reviewRoutes.js'
+import commentRoutes from '../App/Routes/commentRoutes.js'
+import commentRepliesRoutes from '../App/Routes/commentRepliesRoutes.js'
 
 // Environment Variables.
 dotenv.config();
@@ -44,6 +47,12 @@ app.use(restaurantCuisineSearchRoutes);
 app.use(menuSearchRoutes);
 // Restaurant Filtering Routes.
 app.use(restaurantFilteringRoutes);
+// Review Routes.
+app.use(reviewRoutes);
+// Comment Routes.
+app.use(commentRoutes);
+// Comment Replies Routes.
+app.use(commentRepliesRoutes);
 
 // Global Check Middleware
 app.use((err , req , res , next) => {
