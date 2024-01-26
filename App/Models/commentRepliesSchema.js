@@ -13,6 +13,11 @@ const commentRepliesSchema = new mongoose.Schema({
         ref : "Comment",
         required: true
     },
+    parentReplyId : {
+        type: Schema.Types.ObjectId,
+        ref : "CommentReplies",
+        default: null
+    },
     reply : {
         type: String,
         required: true

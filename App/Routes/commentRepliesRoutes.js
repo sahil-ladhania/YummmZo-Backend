@@ -5,7 +5,7 @@ import { validateCommentReplies } from '../Middlewares/ReviewsAndComments/valida
 const router = express.Router();
 
 // Defining Comment Replies Routes Middlewares.
-router.post('/api/user/comment/comment-replies' , validateCommentReplies , addReplyToComment);
+router.post('/api/user/comment/comment-replies/:commentId/:parentReplyId?' , validateCommentReplies , addReplyToComment);
 router.get('/api/user/comment-replies/:commentId' , getAllRepliesForComment);
 router.put('/api/user/comment-replies/:replyId' , updateReply);
 router.delete('/api/user/comment-replies/:replyId' , deleteReply);

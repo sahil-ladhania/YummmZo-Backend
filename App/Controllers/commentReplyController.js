@@ -1,4 +1,5 @@
 // Importing Necessary Dependencies and Files.
+import mongoose from "mongoose";
 import CommentReplies from "../Models/commentRepliesSchema.js";
 import Comment from "../Models/commentSchema.js";
 import User from "../Models/userSchema.js";
@@ -11,12 +12,14 @@ export const addReplyToComment = (req , res) => {
     console.log(userId);
     const commentId = req.commentReplyData.commentId;
     console.log(commentId);
+    const parentReplyId = req.commentReplyData.parentReplyId;
+    console.log(parentReplyId);
     const reply = req.commentReplyData.reply;
     console.log(reply);
-    // Check If The User Exist In The Database.
+    // Step 2: Check If The User Exist In The Database.
     User.findById({_id : userId})
-        .then((userDetails) => {
-            if(!userDetails){
+        .then((user) => {
+            if(!user){
                 res.status(404).json({
                     "Message" : "User Doesnt Exist !!!"
                 })
@@ -31,27 +34,91 @@ export const addReplyToComment = (req , res) => {
                             })
                         }
                         else{
-                            // Create A New Reply Document Using The CommentReply Model.
-                            const commentReplyInstance = new CommentReplies({
-                                userId : userId,
-                                commentId : commentId,
-                                reply : reply
-                            })
-                            console.log(commentReplyInstance);
-                            // Save The New Reply Document To The Database.
-                            commentReplyInstance.save()
-                                .then((savedCommentReply) => {
-                                    // Respond With The Newly Created Reply Details.
-                                    res.status(201).json({
-                                        "Message" : "Comment Reply Created ...",
-                                        "CommentReply" : savedCommentReply
+                            // Check If Parent Reply ID Is Provided.
+                            if(!parentReplyId){
+                                // Create Reply To Comment Instance.
+                                const replyToCommentInstance = new CommentReplies({
+                                    userId: userId,
+                                    commentId: commentId,
+                                    reply: reply
+                                });
+                                console.log(replyToCommentInstance);
+                                // Save Reply To Comment Instance To Database.
+                                replyToCommentInstance.save()
+                                    .then((savedCommentReply) => {
+                                        res.status(201).json({
+                                            "Message": "Reply To Comment Created ...",
+                                            "CommentReply": savedCommentReply
+                                        });
                                     })
-                                })
-                                .catch((error) => {
-                                    res.status(500).json({
-                                        "Error" : `Error In Saving Comment Reply : ${error} !!!`
-                                    })
-                                })
+                                    .catch((error) => {
+                                        res.status(500).json({
+                                            "Error": `Error In Saving Reply To Comment : ${error} !!!`
+                                        });
+                                    });
+                            }
+                            else{
+                                // If Parent Reply ID Is Provided :-
+                                // Validate Parent Reply ID Is A Valid MongoDB ObjectID.
+                                const isParentReplyObjectIdValid = mongoose.Types.ObjectId.isValid(parentReplyId);
+                                console.log(isParentReplyObjectIdValid);
+                                // If Valid, Check Parent Reply Existence In Database.
+                                    if(isParentReplyObjectIdValid === true){
+                                        console.log("ParentReplyId is Valid...");
+                                        // Verify Parent Reply Exists.
+                                        CommentReplies.findById(parentReplyId)
+                                            .then((parentReply) => {
+                                                if(!parentReply){
+                                                    res.status(404).json({
+                                                        "Message" : "Parent Reply Doesnt Exist ..."
+                                                    })
+                                                }
+                                                else{
+                                                    // Ensure Parent Reply Belongs To Same Comment.
+                                                    // Handle Cases Where Parent Reply Doesn't Exist or Belongs to Different Comment.
+                                                    if(parentReply.commentId.toString() !== commentId){
+                                                        res.status(400).json({
+                                                            "Message" : "Parent Reply Belongs To Different Comment !!!"
+                                                        })
+                                                    }
+                                                    else{
+                                                        // Create Reply To Reply Instance.
+                                                        const replyToReplyInstance = new CommentReplies({
+                                                            userId  : userId,
+                                                            commentId : commentId,
+                                                            parentReplyId : parentReplyId,
+                                                            reply : reply
+                                                        })
+                                                        console.log(replyToReplyInstance);
+                                                        // Save Reply To Reply Instance to Database.
+                                                        replyToReplyInstance.save()
+                                                            .then((savedCommentReply) => {
+                                                                res.status(201).json({
+                                                                    "Message" : "Reply To Reply Created ...",
+                                                                    "CommentReply" : savedCommentReply
+                                                                })
+                                                            })
+                                                            .catch((error) => {
+                                                                res.status(500).json({
+                                                                    "Error" : `Error In Saving Reply To Reply : ${error} !!!`
+                                                                })
+                                                            })
+                                                    }
+                                                }
+                                            })
+                                            .catch((error) => {
+                                                res.status(500).json({
+                                                    "Error": `Error In Finding Parent Reply: ${error}`
+                                                });
+                                            })
+                                    }
+                                    else{
+                                        console.log("ParentReplyId is Not Valid!!!");
+                                        res.status(500).json({
+                                            "Error" : "Invalid Parent Reply Id !!!"
+                                        })
+                                    }
+                            }
                         }
                     })
                     .catch((error) => {

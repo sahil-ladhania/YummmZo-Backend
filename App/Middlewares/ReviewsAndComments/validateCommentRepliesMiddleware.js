@@ -4,6 +4,7 @@ import z from 'zod';
 const commentReplySchema = z.object({
     userId : z.string().trim(),
     commentId : z.string().trim(),
+    parentReplyId : z.string().trim().optional(),
     reply : z.string().trim()
 });
 
